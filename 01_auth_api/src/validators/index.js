@@ -1,3 +1,3 @@
 module.exports = {
-	userValidator: require("./user.validator")
+	oauthValidator: require("./oauth.validator")
 };

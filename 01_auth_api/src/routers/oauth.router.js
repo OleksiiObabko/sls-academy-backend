@@ -10,4 +10,12 @@ router.post(
 	oauthController.signUp
 );
 
+router.post(
+	"/sign-in",
+	oauthMiddleware.isBodyLoginValid,
+	oauthMiddleware.isUserExistsByEmail,
+	oauthMiddleware.isPasswordsSame,
+	oauthController.signIn
+)
+
 module.exports = router;
