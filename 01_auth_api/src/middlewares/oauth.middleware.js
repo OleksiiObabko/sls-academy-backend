@@ -1,9 +1,31 @@
 const {oauthValidator} = require("../validators");
 const {ApiError} = require("../errors");
-const {userRepository} = require("../repositories");
+const {userRepository, oauthRepository} = require("../repositories");
 const {oauthService} = require("../services");
+const {removeBearer} = require("../helpers/oauth.helper");
+const {tokenTypes} = require("../enums");
 
 module.exports = {
+	checkAccessToken: async (req, res, next) => {
+		try {
+			const header = req.get("Authorization");
+
+			if (!header) return next(new ApiError("No token", 401));
+
+			const accessToken = removeBearer(header);
+
+			oauthService.checkToken(accessToken, tokenTypes.accessToken);
+
+			const tokenPairInDb = await oauthRepository.findTokenPair(accessToken);
+
+			if (!tokenPairInDb) return next(new ApiError("No token in database", 401));
+
+			req.tokenPair = tokenPairInDb;
+			next();
+		} catch (e) {
+			next(e);
+		}
+	},
 	isBodyCreateValid: async (req, res, next) => {
 		try {
 			const userData = req.body;
