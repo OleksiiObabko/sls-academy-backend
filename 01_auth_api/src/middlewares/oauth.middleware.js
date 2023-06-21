@@ -44,7 +44,7 @@ module.exports = {
 		try {
 			const validatedBody = oauthValidator.signUpValidator.validate(req.body);
 
-			if (validatedBody.error) return next(new ApiError("Wrong login or password", 400));
+			if (validatedBody.error) return next(new ApiError("Wrong login or password", 401));
 
 			req.body = validatedBody.value;
 			next();
@@ -58,7 +58,7 @@ module.exports = {
 
 			const userInDb = await userRepository.getOneByField(dbField, searchValue);
 
-			if (userInDb) return next(new ApiError(`User with this ${field} already exists`, 400));
+			if (userInDb) return next(new ApiError(`User with this ${field} already exists`, 409));
 
 			next();
 		} catch (e) {
@@ -69,7 +69,7 @@ module.exports = {
 		try {
 			const userInDb = await userRepository.getOneByField("email", req.body.email);
 
-			if (!userInDb) return next(new ApiError("Wrong login or password", 400));
+			if (!userInDb) return next(new ApiError("Wrong login or password", 401));
 
 			req.userInDb = userInDb;
 			next();
@@ -83,7 +83,7 @@ module.exports = {
 
 			const isPasswordsSame = await oauthService.isPasswordsSame(body.password, userInDb.password);
 
-			if (!isPasswordsSame) return next(new ApiError("Wrong login or password", 400));
+			if (!isPasswordsSame) return next(new ApiError("Wrong login or password", 401));
 
 			next();
 		} catch (e) {
