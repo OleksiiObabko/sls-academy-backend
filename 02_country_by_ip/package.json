@@ -1,0 +1,19 @@
+{
+  "name": "02_country_by_ip",
+  "version": "1.0.0",
+  "description": "This task is based on a real case study. At one time, we were doing a service where we had to determine from what point a user was knocking on the endpoint, and then offer him the appropriate logic for the application. A trivial example: a Frenchman wants to see prices in euros instead of dollars, and an American doesn't need Japanese yen.",
+  "main": "src/app.js",
+  "scripts": {
+    "dev": "nodemon src/app.js"
+  },
+  "author": "Oleksii Obabko",
+  "license": "ISC",
+  "dependencies": {
+    "csv-parser": "^3.0.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
